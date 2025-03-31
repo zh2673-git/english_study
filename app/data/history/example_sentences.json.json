@@ -1,0 +1,17 @@
+{
+  "current_index": 1,
+  "results": {
+    "0": {
+      "attempts": 1,
+      "correct": 1
+    },
+    "1": {
+      "attempts": 1,
+      "correct": 1
+    }
+  },
+  "stats": {
+    "correct": 1,
+    "wrong": 0
+  }
+}

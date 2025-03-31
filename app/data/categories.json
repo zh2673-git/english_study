@@ -1,0 +1,16 @@
+{
+  "default": {
+    "name": "默认",
+    "files": []
+  },
+  "89ca285e-4faf-4783-a0ba-3001b213993c": {
+    "name": "经典英文歌曲",
+    "files": [
+      "_Hotel_California__-_Eagles.json",
+      "_My_Heart_Will_Go_On__-_Celine_Dion.json",
+      "_Yesterday__-_The_Beatles.json",
+      "_Imagine__-_John_Lennon.json",
+      "_Shape_of_My_Heart__-_Sting.json"
+    ]
+  }
+}

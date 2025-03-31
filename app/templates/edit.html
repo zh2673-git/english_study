@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="edit-view">
+    <h2>编辑: {{ file_name.replace('_', ' ').replace('.json', '') }}</h2>
+    
+    <div class="actions">
+        <a href="{{ url_for('main.index') }}" class="btn">返回首页</a>
+        <a href="{{ url_for('main.sentences', file_name=file_name) }}" class="btn">查看句子</a>
+    </div>
+    
+    <div class="instructions">
+        <p>请按照格式编辑句子集内容：</p>
+        <ol>
+            <li>每个<strong>英文句子</strong>占一行</li>
+            <li>每个<strong>中文翻译</strong>占下一行</li>
+            <li>英文和中文必须成对出现</li>
+            <li>不要留空行或缺少中文翻译</li>
+        </ol>
+        <p>例如:</p>
+        <pre>Hello, world!
+你好，世界！
+I love learning English.
+我喜欢学习英语。</pre>
+        <p>对于歌词或长文本，请确保每行英文都有对应的中文翻译：</p>
+        <pre>Every night in my dreams, I see you, I feel you.
+每晚在梦中，我见到你，感受你。
+That is how I know you go on.
+我知道你从未离去。
+Far across the distance and spaces between us,
+跨越遥远的距离和时空，</pre>
+    </div>
+    
+    <form method="post" action="{{ url_for('main.edit_sentence_file', file_name=file_name) }}">
+        <div class="form-group">
+            <label for="content">句子内容:</label>
+            <textarea id="content" name="content" class="textarea-editor" rows="20">{{ content }}</textarea>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">保存修改</button>
+            <a href="{{ url_for('main.sentences', file_name=file_name) }}" class="btn">取消</a>
+        </div>
+    </form>
+</section>
+{% endblock %} 

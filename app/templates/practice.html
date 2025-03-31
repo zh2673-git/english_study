@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script src="{{ url_for('static', filename='js/practice.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+<section class="practice-view" data-file-name="{{ file_name }}">
+    <h2>练习: {{ file_name.replace('_', ' ').replace('.json', '') }}</h2>
+    
+    <div class="actions">
+        <a href="{{ url_for('main.index') }}" class="btn">返回首页</a>
+        <a href="{{ url_for('main.sentences', file_name=file_name) }}" class="btn">查看句子</a>
+        
+        <!-- 添加练习时间设置 -->
+        <div class="time-settings">
+            <label for="practice-time">练习时间(分钟):</label>
+            <select id="practice-time" class="time-selector">
+                <option value="0">不限时</option>
+                <option value="5">5分钟</option>
+                <option value="10">10分钟</option>
+                <option value="15">15分钟</option>
+                <option value="20">20分钟</option>
+                <option value="30">30分钟</option>
+            </select>
+            <button class="btn btn-secondary start-timer-btn">开始计时</button>
+            <span class="timer-display hidden">剩余时间: <span class="remaining-time">00:00</span></span>
+        </div>
+    </div>
+    
+    {% if sentences %}
+        <div class="practice-container" data-sentences='{{ sentences|tojson }}' data-history='{{ history|tojson }}'>
+            <div class="progress-bar">
+                <div class="progress"></div>
+                <div class="progress-text">0/{{ sentences|length }}</div>
+            </div>
+            
+            <div class="practice-card">
+                <div class="card-header">
+                    <span class="card-number">1</span> / {{ sentences|length }}
+                </div>
+                
+                <div class="card-body">
+                    <!-- 中文提示区域 -->
+                    <div class="chinese-section">
+                        <h3>中文提示：</h3>
+                        <div class="chinese-text"></div>
+                    </div>
+                    
+                    <!-- 英文答案区域 -->
+                    <div class="english-text hidden"></div>
+                    
+                    <!-- 单词槽位区域 -->
+                    <div class="word-section">
+                        <h3>单词槽位：</h3>
+                        <div class="word-slots"></div>
+                    </div>
+                    
+                    <!-- 输入区域 -->
+                    <div class="input-section">
+                        <h3>输入英文：</h3>
+                        <textarea class="english-input" placeholder="请输入对应的英文句子..."></textarea>
+                    </div>
+                    
+                    <!-- 反馈区域 -->
+                    <div class="feedback hidden">
+                        <div class="feedback-text"></div>
+                        <div class="word-feedback"></div>
+                    </div>
+                </div>
+                
+                <div class="card-actions">
+                    <div class="navigation-btns">
+                        <button class="btn btn-secondary prev-btn">上一句</button>
+                        <button class="btn btn-secondary next-sentence-btn">下一句</button>
+                    </div>
+                    <div class="practice-btns">
+                        <button class="btn play-btn">播放</button>
+                        <button class="btn btn-secondary show-btn">显示答案</button>
+                        <button class="btn btn-primary check-btn">检查</button>
+                        <button class="btn btn-primary next-btn hidden">下一个</button>
+                    </div>
+                    
+                    <audio class="audio-player"></audio>
+                </div>
+            </div>
+            
+            <div class="practice-summary hidden">
+                <h3>练习完成!</h3>
+                <div class="summary-stats">
+                    <div>总共: <span class="total-count">0</span> 个句子</div>
+                    <div>正确: <span class="correct-count">0</span> 个句子</div>
+                    <div>错误: <span class="wrong-count">0</span> 个句子</div>
+                </div>
+                
+                <button class="btn btn-primary restart-btn">重新开始</button>
+                <a href="{{ url_for('main.index') }}" class="btn">返回首页</a>
+            </div>
+        </div>
+    {% else %}
+        <p>这个句子集是空的，无法进行练习。</p>
+    {% endif %}
+</section>
+{% endblock %} 

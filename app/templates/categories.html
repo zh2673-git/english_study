@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="categories-view">
+    <h2>管理分类</h2>
+    
+    <div class="actions">
+        <a href="{{ url_for('main.index') }}" class="btn">返回首页</a>
+    </div>
+    
+    <div class="categories-section">
+        <h3>当前分类</h3>
+        <div class="categories-list">
+            {% for cat_id, category in categories.items() %}
+                <div class="category-item" data-id="{{ cat_id }}">
+                    <div class="category-name">{{ category.name }}</div>
+                    <div class="category-files">
+                        <div class="files-count">{{ category.files|length }} 个句子集</div>
+                        <div class="files-list">
+                            {% for file_name in category.files %}
+                                <div class="file-item">{{ file_name.replace('_', ' ').replace('.json', '') }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% if cat_id != 'default' %}
+                        <div class="category-actions">
+                            <form method="post" action="{{ url_for('main.manage_categories') }}">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="id" value="{{ cat_id }}">
+                                <button type="submit" class="btn btn-danger small-btn">删除</button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        
+        <div class="add-category">
+            <h3>添加新分类</h3>
+            <form method="post" action="{{ url_for('main.manage_categories') }}">
+                <input type="hidden" name="action" value="add">
+                <div class="form-group">
+                    <label for="name">分类名称:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <button type="submit" class="btn btn-primary">添加分类</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="file-assignment-section">
+        <h3>分配句子集到分类</h3>
+        {% if files %}
+            <div class="files-grid">
+                {% for file_name in files %}
+                    <div class="file-assignment-item">
+                        <div class="file-name">{{ file_name.replace('_', ' ').replace('.json', '') }}</div>
+                        <form method="post" action="{{ url_for('main.manage_categories') }}">
+                            <input type="hidden" name="action" value="update">
+                            <input type="hidden" name="file_name" value="{{ file_name }}">
+                            <div class="form-group">
+                                <select name="category_id" class="category-selector">
+                                    {% for cat_id, category in categories.items() %}
+                                        <option value="{{ cat_id }}" {% if file_name in category.files %}selected{% endif %}>
+                                            {{ category.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-secondary small-btn">更新</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>没有可用的句子集</p>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block head %}
+<style>
+    .categories-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .category-item {
+        background-color: #f8f9fa;
+        border-radius: 0.25rem;
+        padding: 1rem;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    }
+    
+    .category-name {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 0.75rem;
+        color: #4a6fa5;
+    }
+    
+    .files-count {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-bottom: 0.5rem;
+    }
+    
+    .files-list {
+        font-size: 0.9rem;
+        max-height: 120px;
+        overflow-y: auto;
+        margin-bottom: 1rem;
+    }
+    
+    .file-item {
+        padding: 0.25rem 0;
+    }
+    
+    .add-category {
+        margin: 2rem 0;
+    }
+    
+    .files-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+    
+    .file-assignment-item {
+        background-color: #f8f9fa;
+        border-radius: 0.25rem;
+        padding: 1rem;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    }
+    
+    .file-name {
+        font-weight: 500;
+        margin-bottom: 0.75rem;
+    }
+    
+    .small-btn {
+        font-size: 0.875rem;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    .category-selector {
+        width: 100%;
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
+        border-radius: 0.25rem;
+        border: 1px solid #dee2e6;
+    }
+</style>
+{% endblock %} 

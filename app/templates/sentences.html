@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script src="{{ url_for('static', filename='js/sentences.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+<section class="sentence-view">
+    <h2>{{ file_name.replace('_', ' ').replace('.json', '') }}</h2>
+    
+    <div class="actions">
+        <a href="{{ url_for('main.index') }}" class="btn">返回</a>
+        <a href="{{ url_for('main.practice', file_name=file_name) }}" class="btn btn-primary">练习</a>
+    </div>
+    
+    {% if sentences %}
+        <div class="sentences-list">
+            {% for sentence in sentences %}
+                <div class="sentence-card" data-id="{{ sentence.id }}" data-english="{{ sentence.english }}">
+                    <div class="sentence-content">
+                        <div class="english">{{ sentence.english }}</div>
+                        <div class="chinese">{{ sentence.chinese }}</div>
+                    </div>
+                    <div class="sentence-actions">
+                        <button class="btn play-btn" data-id="{{ sentence.id }}">播放</button>
+                    </div>
+                    <audio id="audio-{{ sentence.id }}" class="audio-player"></audio>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>这个句子集是空的。</p>
+    {% endif %}
+</section>
+{% endblock %} 
