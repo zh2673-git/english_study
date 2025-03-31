@@ -49,7 +49,7 @@ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 ### 3. 网络需求
 
-**注意**：语音合成功能（英语朗读）需要连接互联网，因为应用使用Google Text-to-Speech (gTTS)服务生成语音。如果无法连接互联网，语音播放功能将无法使用，但其他功能可以正常工作。
+**注意**：语音合成功能（英语朗读）使用本地语音引擎（`pyttsx3`），因此不需要连接互联网。所有功能都可以离线使用。
 
 ### 4. 运行应用
 ```bash
@@ -89,7 +89,7 @@ python run.py
 
 - 后端：Python Flask
 - 前端：HTML, CSS, JavaScript
-- 语音合成：gTTS (Google Text-to-Speech)
+- 语音合成：pyttsx3 (本地语音合成引擎)
 
 ## 许可证
 
